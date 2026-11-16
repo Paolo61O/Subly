@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Subly – Tous tes abonnements au même endroit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#F6F6FB;--surface:#fff;--ink:#16163A;--mute:#5A5A7D;--line:#E2E2F0;--vio:#4B3BEF;--vio-t:#fff;--mint:#0B8A6C;--coral:#D8402A;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F0F24;--surface:#181836;--ink:#F1F1FA;--mute:#A8A8CB;--line:#2B2B52;--vio:#8F84FF;--vio-t:#0F0F24;--mint:#3DD6B0;--coral:#FF8A74;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0F0F24;--surface:#181836;--ink:#F1F1FA;--mute:#A8A8CB;--line:#2B2B52;--vio:#8F84FF;--vio-t:#0F0F24;--mint:#3DD6B0;--coral:#FF8A74;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1rem/1.6 "Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
+h1,h2,h3{font-family:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;line-height:1.1;margin:0;letter-spacing:-.02em}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--vio);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+header{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+.logo{font:800 1.5rem "Bricolage Grotesque",sans-serif;text-decoration:none;letter-spacing:-.03em}
+.logo i{font-style:normal;color:var(--vio)}
+nav{display:flex;gap:20px;align-items:center}
+nav a{text-decoration:none;color:var(--mute);font-weight:500}
+nav a:hover{color:var(--ink)}
+.btn{display:inline-block;border:0;cursor:pointer;background:var(--vio);color:var(--vio-t);font:600 1rem "Instrument Sans",sans-serif;padding:12px 22px;border-radius:999px;text-decoration:none}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.hero{display:grid;grid-template-columns:1fr 1.15fr;gap:40px;align-items:start;padding:40px 0 70px}
+.hero h1{font-size:clamp(2.4rem,5.5vw,4rem);font-weight:800}
+.hero p.lead{font-size:1.15rem;color:var(--mute);max-width:46ch;margin:20px 0 28px}
+.hero .cta{display:flex;gap:12px;flex-wrap:wrap}
+.stat{margin-top:34px;display:flex;gap:28px;color:var(--mute);font-size:.95rem}
+.stat b{display:block;color:var(--ink);font:700 1.6rem "Bricolage Grotesque",sans-serif}
+.demo{background:var(--surface);border:1.5px solid var(--line);border-radius:22px;padding:22px;box-shadow:0 18px 50px -24px rgba(40,30,140,.35)}
+.demo h2{font-size:1.1rem;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.demo h2 small{font:500 .8rem "Instrument Sans",sans-serif;color:var(--mute)}
+.totals{display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;margin-bottom:16px}
+.donut{width:104px;height:104px;transform:rotate(-90deg)}
+.donut circle{fill:none;stroke-width:15}
+.big{font:800 2.2rem "Bricolage Grotesque",sans-serif;letter-spacing:-.03em}
+.sub{color:var(--mute);font-size:.9rem}
+.alert{background:color-mix(in srgb,var(--coral) 14%,transparent);color:var(--coral);border-radius:12px;padding:9px 13px;font-weight:600;font-size:.92rem;margin-bottom:12px}
+.alert.ok{background:color-mix(in srgb,var(--mint) 14%,transparent);color:var(--mint)}
+ul.list{list-style:none;margin:0;padding:0}
+ul.list li{display:grid;grid-template-columns:12px 1fr auto 30px;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.dot{width:12px;height:12px;border-radius:50%}
+.nm{font-weight:600}
+.nm small{display:block;font-weight:400;color:var(--mute);font-size:.82rem}
+.pr{font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+.x{background:none;border:0;color:var(--mute);cursor:pointer;font-size:1.2rem;line-height:1;border-radius:8px;height:30px}
+.x:hover{color:var(--coral)}
+.add{display:grid;grid-template-columns:1.3fr .8fr .9fr .9fr auto;gap:8px;margin-top:14px}
+.add input,.add select{width:100%;min-width:0;font:inherit;padding:10px 11px;border-radius:10px;border:1.5px solid var(--line);background:var(--bg);color:var(--ink)}
+.add .btn{padding:10px 16px}
+.msg{min-height:1.4em;margin:8px 0 0;font-size:.88rem;color:var(--coral)}
+.tip{margin-top:12px;border-left:4px solid var(--vio);padding:4px 0 4px 12px;font-size:.93rem}
+section{padding:60px 0}
+section h2.t{font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;margin-bottom:12px}
+section p.in{color:var(--mute);max-width:60ch;margin:0 0 34px}
+.feat{display:grid;grid-template-columns:repeat(2,1fr);gap:0 48px}
+.feat div{padding:22px 0;border-top:1.5px solid var(--line)}
+.feat h3{font-size:1.25rem;margin-bottom:6px}
+.feat p{margin:0;color:var(--mute)}
+.plans{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;max-width:760px}
+.plan{background:var(--surface);border:1.5px solid var(--line);border-radius:20px;padding:26px}
+.plan.pro{border-color:var(--vio);border-width:2px}
+.plan h3{font-size:1.3rem}
+.price{font:800 2.4rem "Bricolage Grotesque",sans-serif;margin:8px 0 4px}
+.price small{font:500 1rem "Instrument Sans",sans-serif;color:var(--mute)}
+.plan ul{padding-left:1.1em;margin:14px 0 22px;color:var(--mute)}
+.plan li{margin-bottom:5px}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;counter-reset:s;list-style:none;padding:0;margin:0}
+.steps li{counter-increment:s;border-top:3px solid var(--vio);padding-top:12px}
+.steps li::before{content:counter(s) ".";font:800 1.5rem "Bricolage Grotesque",sans-serif;color:var(--vio)}
+.steps b{display:block}
+.steps span{color:var(--mute)}
+details{border-top:1.5px solid var(--line);padding:14px 0;max-width:760px}
+summary{cursor:pointer;font-weight:600}
+details p{color:var(--mute);margin:8px 0 0}
+footer{border-top:1.5px solid var(--line);padding:28px 0 40px;color:var(--mute);font-size:.92rem}
+@media (max-width:860px){.hero{grid-template-columns:1fr}.feat,.plans,.steps{grid-template-columns:1fr}.add{grid-template-columns:1fr 1fr}.add .btn{grid-column:1/-1}nav a.h{display:none}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<a class="logo" href="#top">Sub<i>ly</i></a>
+<nav><a class="h" href="#fonctions">Fonctions</a><a class="h" href="#tarifs">Tarifs</a><a class="h" href="#faq">Questions</a><a class="btn" href="#demo">Essayer</a></nav>
+</header>
+
+<main id="top">
+<div class="hero">
+<div>
+<h1>Tous tes abonnements au même endroit. Zéro prélèvement surprise.</h1>
+<p class="lead">Subly liste tes abonnements, calcule ce que tu paies vraiment chaque mois et te prévient 3 jours avant chaque prélèvement. Pensé pour les étudiants et les jeunes actifs.</p>
+<div class="cta"><a class="btn" href="#demo">Tester la démo</a><a class="btn ghost" href="#tarifs">Voir les tarifs</a></div>
+<div class="stat"><div><b>6 à 10</b>abonnements en moyenne chez les 18-30 ans</div><div><b>J-3</b>alerte avant chaque prélèvement</div></div>
+</div>
+
+<div class="demo" id="demo" aria-label="Démo du tableau de bord">
+<h2>Ton tableau de bord <small>données fictives, modifiables</small></h2>
+<div class="totals">
+<svg class="donut" viewBox="0 0 100 100" role="img" aria-label="Répartition par catégorie"><g id="ring"></g></svg>
+<div><div class="big" id="tm">0 €</div><div class="sub">par mois · <b id="ty">0 €</b> par an · <span id="nb">0</span> actifs</div></div>
+</div>
+<div class="alert" id="al" role="status"></div>
+<ul class="list" id="list"></ul>
+<div class="add">
+<input id="fn" placeholder="Service (ex. Canal+)" aria-label="Nom du service" maxlength="24">
+<input id="fp" type="number" min="0" step="0.01" placeholder="Prix €" aria-label="Prix en euros">
+<select id="fc" aria-label="Récurrence"><option value="monthly">Mensuel</option><option value="yearly">Annuel</option><option value="weekly">Hebdo</option></select>
+<select id="fg" aria-label="Catégorie"></select>
+<button class="btn" id="fa" type="button">Ajouter</button>
+</div>
+<p class="msg" id="msg" role="alert"></p>
+<div class="tip" id="tip"></div>
+</div>
+</div>
+
+<section id="fonctions">
+<h2 class="t">Ce que Subly fait pour toi</h2>
+<p class="in">Un tableau de bord, des alertes et des conseils chiffrés. Pas de vraie donnée bancaire au départ : le compte est simulé pour découvrir le parcours.</p>
+<div class="feat">
+<div><h3>Tableau de bord clair</h3><p>Total par mois et par an (les abonnements annuels sont lissés sur 12 mois), nombre d’abonnements actifs, prochaine échéance et répartition par catégorie.</p></div>
+<div><h3>Alertes 3 jours avant</h3><p>Un email avant chaque prélèvement à partir de 5 €. Le délai (1, 3 ou 7 jours) et le seuil se règlent dans les paramètres.</p></div>
+<div><h3>Conseils avec l’économie en euros</h3><p>Abonnement inutilisé depuis 90 jours, doublons, offres duo ou famille, passage à l’annuel. Chaque conseil affiche ce que tu gagnes par an.</p></div>
+<div><h3>Ajout en 30 secondes</h3><p>Choisis un service populaire dans la liste, ses infos se remplissent. Tu peux mettre en pause ou archiver un abonnement à tout moment.</p></div>
+</div>
+</section>
+
+<section>
+<h2 class="t">Prêt en trois étapes</h2>
+<p class="in">Inscription par email ou Google, puis :</p>
+<ol class="steps">
+<li><b>Connecte un compte simulé</b><span>Un jeu de données fictif te montre le résultat tout de suite.</span></li>
+<li><b>Ajoute tes abonnements</b><span>Nom, prix, date du prochain prélèvement.</span></li>
+<li><b>Laisse Subly te prévenir</b><span>Alertes et conseils arrivent avant que ça coûte.</span></li>
+</ol>
+</section>
+
+<section id="tarifs">
+<h2 class="t">Gratuit pour commencer</h2>
+<p class="in">Premium se rembourse dès le premier conseil suivi. Essai de 14 jours, sans carte.</p>
+<div class="plans">
+<div class="plan"><h3>Gratuit</h3><div class="price">0 €</div>
+<ul><li>5 abonnements suivis</li><li>Tableau de bord et ajout manuel</li><li>Alerte email J-3 basique</li><li>1 conseil visible</li></ul>
+<a class="btn ghost" href="#demo">Commencer gratuitement</a></div>
+<div class="plan pro"><h3>Premium</h3><div class="price">2,99 € <small>/mois ou 24 €/an</small></div>
+<ul><li>Abonnements illimités</li><li>Notifications push et délais personnalisés</li><li>Récapitulatif mensuel et tous les conseils</li><li>Export CSV</li><li>Offre étudiant à 1,99 €/mois</li></ul>
+<a class="btn" href="#demo">Essayer 14 jours</a></div>
+</div>
+</section>
+
+<section id="faq">
+<h2 class="t">Questions fréquentes</h2>
+<details><summary>Subly accède-t-il à mon vrai compte bancaire ?</summary><p>Non. Au lancement, aucune donnée bancaire réelle n’est stockée. La synchronisation bancaire arrivera plus tard, via un agrégateur agréé DSP2.</p></details>
+<details><summary>Mes données sont-elles protégées ?</summary><p>Hébergement dans l’UE, conformité RGPD, export et suppression de ton compte et de tes données à tout moment.</p></details>
+<details><summary>Faut-il installer une application ?</summary><p>Non, Subly fonctionne dans le navigateur et s’installe sur ton téléphone comme une PWA, avec notifications push en Premium.</p></details>
+<details><summary>Subly résilie-t-il mes abonnements ?</summary><p>Pas dans cette première version. Subly te montre quoi couper et combien tu économises, la résiliation reste de ton côté.</p></details>
+</section>
+</main>
+
+<footer>© 2026 Subly · Mentions légales · Confidentialité</footer>
+</div>
+
+<script>
+const CAT={"Vidéo":"#6A5BFF","Musique":"#12A585","Sport":"#E8503A","Logiciels":"#D99A00","Cloud":"#2D9CDB"};
+const CYC={monthly:"/mois",yearly:"/an",weekly:"/sem."};
+const MAX=5;
+let subs=[
+{n:"Netflix",p:13.49,c:"monthly",g:"Vidéo",d:2},
+{n:"Spotify",p:10.99,c:"monthly",g:"Musique",d:6},
+{n:"Basic-Fit",p:24.99,c:"monthly",g:"Sport",d:11},
+{n:"Disney+",p:89.9,c:"yearly",g:"Vidéo",d:40}
+];
+const $=id=>document.getElementById(id);
+const eur=n=>n.toLocaleString("fr-FR",{style:"currency",currency:"EUR"});
+const month=s=>s.c==="monthly"?s.p:s.c==="yearly"?s.p/12:s.p*52/12;
+const when=d=>d<=0?"aujourd’hui":d===1?"demain":"dans "+d+" jours";
+function esc(t){const e=document.createElement("span");e.textContent=t;return e.innerHTML}
+
+$("fg").innerHTML=Object.keys(CAT).map(k=>'<option>'+k+'</option>').join("");
+
+function render(){
+  const tm=subs.reduce((a,s)=>a+month(s),0);
+  $("tm").textContent=eur(tm);$("ty").textContent=eur(tm*12);$("nb").textContent=subs.length;
+  $("list").innerHTML=subs.map((s,i)=>
+    '<li><span class="dot" style="background:'+CAT[s.g]+'"></span>'+
+    '<span class="nm">'+esc(s.n)+'<small>'+s.g+' · '+when(s.d)+'</small></span>'+
+    '<span class="pr">'+eur(s.p)+'<small class="sub">'+CYC[s.c]+'</small></span>'+
+    '<button class="x" data-i="'+i+'" aria-label="Supprimer '+esc(s.n)+'">×</button></li>').join("");
+  // anneau
+  const by={};subs.forEach(s=>by[s.g]=(by[s.g]||0)+month(s));
+  const C=2*Math.PI*38;let off=0;
+  $("ring").innerHTML=tm?Object.entries(by).map(([g,v])=>{
+    const l=v/tm*C;const el='<circle cx="50" cy="50" r="38" stroke="'+CAT[g]+'" stroke-dasharray="'+l+' '+(C-l)+'" stroke-dashoffset="'+(-off)+'"/>';off+=l;return el}).join(""):"";
+  // alerte
+  const next=subs.slice().sort((a,b)=>a.d-b.d)[0];const al=$("al");
+  if(!next){al.textContent="Aucun abonnement pour l’instant. Ajoute le premier ci-dessous.";al.className="alert ok"}
+  else if(next.d<=3){al.textContent="Alerte : "+next.n+" sera prélevé "+when(next.d)+" ("+eur(next.p)+").";al.className="alert"}
+  else{al.textContent="Prochaine échéance : "+next.n+", "+eur(next.p)+", "+when(next.d)+".";al.className="alert ok"}
+  // conseil
+  const grp={};subs.forEach(s=>(grp[s.g]=grp[s.g]||[]).push(s));
+  const dup=Object.entries(grp).find(([,a])=>a.length>1);
+  if(dup){const a=dup[1];const save=Math.min(...a.map(month))*12;
+    $("tip").textContent="Doublon détecté : "+a.length+" services "+dup[0]+" ("+a.map(s=>s.n).join(", ")+"). En alterner un te ferait économiser environ "+eur(save)+" par an."}
+  else $("tip").textContent="Aucun doublon détecté. Bien joué.";
+}
+
+$("list").addEventListener("click",e=>{
+  const b=e.target.closest(".x");if(!b)return;
+  subs.splice(+b.dataset.i,1);$("msg").textContent="";render();
+});
+$("fa").addEventListener("click",()=>{
+  const n=$("fn").value.trim(),p=parseFloat($("fp").value);
+  if(!n||!(p>=0)){$("msg").textContent="Indique un nom et un prix.";return}
+  if(subs.length>=MAX){$("msg").textContent="Limite gratuite atteinte (5 abonnements). Passe en Premium pour en suivre davantage.";return}
+  subs.push({n:n,p:p,c:$("fc").value,g:$("fg").value,d:1+Math.floor(Math.random()*28)});
+  $("fn").value="";$("fp").value="";$("msg").textContent="";render();
+});
+try{matchMedia}catch(e){}
+render();
+</script>
+</body>
+</html>
